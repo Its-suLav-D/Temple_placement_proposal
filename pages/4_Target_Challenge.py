@@ -54,7 +54,7 @@ This is a simplified version of the first, focusing only on the smooth line (the
 
 
 
-st.header("Thoughts on this as our target paragraph?")
+st.header("Target 🤯")
 
 image6 = Image.open('./assets/images/tract_geo.png')
 
