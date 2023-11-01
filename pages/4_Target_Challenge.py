@@ -56,6 +56,10 @@ This is a simplified version of the first, focusing only on the smooth line (the
 
 st.header("Thoughts on this as our target paragraph?")
 
+image6 = Image.open('./assets/images/tract_geo.png')
+
+st.image(image6, caption='Active Members in the Tract')
+
 st.write("""
         Our main concern is the "members by tract" data. These are just smaller areas within a county that give us more detailed information than looking at the whole county. We think using "members by tract" is the best way to figure out where we should put new temples. This approach helps us better understand local communities and make smart decisions about where to predict the new temples be placed.
          
