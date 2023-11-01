@@ -21,6 +21,18 @@ image5= Image.open('./assets/images/average_percent_difference.png')
 
 st.image(image5, caption='LDS Sunday Attendance')
 
+
+code6='''
+
+final_result = final_result.withColumn("max_popularity_difference", final_result["max_popularity"] - final_result["sunday_max_popularity"])
+
+final_result = final_result.withColumn("percentage_difference", col("sunday_max_popularity") / col("max_popularity"))
+
+'''
+
+st.code(code6, language='python')
+
+
 st.header("Sunday Attendance")
 
 
@@ -96,6 +108,11 @@ This is a simplified version of the first, focusing only on the smooth line (the
 
          """)
 
+code4='''
+tract_stuff_final = tract_stuff.withColumn("calculated_tract_pop", ((tract_stuff["num_of_visitors"] / tract_stuff["count"])  * tract_stuff["sampling_ratio"]  ) * tract_stuff["avg(sunday_ratio)"])
+'''
+
+st.code(code4, language='python')
 
 
 st.header("Target 🤯")
