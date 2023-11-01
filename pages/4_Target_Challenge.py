@@ -32,6 +32,50 @@ st.write("""
 We've visualized the "Sunday Ratio" over time, which represents the proportion of visits on Sundays compared to overall visits. In the chart, the x-axis shows dates, while the y-axis indicates this ratio. Over time, you can see how the Sunday attendance fluctuates. To make the chart clear and easy to read, we've spaced out the dates on the x-axis and formatted them to show only the month and day. This provides a clear overview without overwhelming with too many date details. The line's rise and fall show periods where Sunday visits were particularly high or low relative to the total, giving insights into attendance trends.
    """)
 
+code1='''
+
+def get_sunday_indices(start_day_of_week, visit_by_day_len):
+    offset = (7-start_day_of_week+1) % 7 
+    sunday_indices = [i for i in range(offset, visit_by_day_len,7)]
+    return sunday_indices
+'''
+
+
+code2='''
+def sum_and_count_sundays(day_of_week, visits_by_day):
+    sunday_indices = get_sunday_indices(day_of_week, len(visits_by_day))
+    number_of_sundays = len(sunday_indices)
+    sum_of_visits_on_sundays = sum(visits_by_day[i] for i in sunday_indices)
+    return (sum_of_visits_on_sundays, number_of_sundays)
+'''
+
+code3='''
+
+# Python function to a UDF ( User Defined )
+sum_and_count_sundays_schema = StructType([
+    StructField("sum_of_visits", IntegerType(), nullable=False),
+    StructField("number_of_sundays", IntegerType(), nullable=False)
+])
+
+sum_and_count_sundays_udf = udf(sum_and_count_sundays, sum_and_count_sundays_schema)
+
+lds_patterns2 = lds_patterns1.withColumn(
+    "sunday_metrics",
+    sum_and_count_sundays_udf("day_of_week", "visits_by_day")
+)
+
+lds_patterns = lds_patterns2.withColumn("sunday_visits", lds_patterns2["sunday_metrics"]["sum_of_visits"])
+lds_patterns = lds_patterns3.withColumn("number_of_sundays", lds_patterns3["sunday_metrics"]["number_of_sundays"])
+
+lds_patterns = lds_patterns4.withColumn("sunday_ratio", 
+                                       F.when(lds_patterns4["number_of_sundays"] > 0, 
+                                              lds_patterns4["sunday_visits"] / lds_patterns4["raw_visit_counts"])
+                                       .otherwise(0))  
+
+'''
+st.code(code1, language='python')
+st.code(code2, language='python')
+st.code(code3, language='python')
 
 st.header("Active Members in the Tract")
 
